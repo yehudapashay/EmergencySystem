@@ -2,7 +2,6 @@ package Model;
 
 import java.sql.*;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -44,32 +43,32 @@ public class DBManagement {
                 String _userType = resultSet.getString(5);
                 if (_userType.equals("RepresentiveAdmin")) {
                     RepresentitiveAdmin _RepresentiveAdmin = new RepresentitiveAdmin(
-                            Main._UserCtrl,
+                            Model._UserCtrl,
                             resultSet.getString(2),
-                            Main._AdminCtrl,
+                            Model._AdminCtrl,
                             resultSet.getString(1));
 
-                    Main._UserCtrl.addUser(_RepresentiveAdmin);
+                    Model._UserCtrl.addUser(_RepresentiveAdmin);
                     System.out.println("USER ADDED:" + resultSet.getString(1));   // ------------ delete in the end
                 }
                 if (_userType.equals("Admin")) {
                     Admin _Admin = new Admin(
-                            Main._UserCtrl,
+                            Model._UserCtrl,
                             resultSet.getString(2),
-                            Main._AdminCtrl,
+                            Model._AdminCtrl,
                             resultSet.getString(1));
 
-                    Main._UserCtrl.addUser(_Admin);
+                    Model._UserCtrl.addUser(_Admin);
                     System.out.println("USER ADDED:" + resultSet.getString(1));   // ------------ delete in the end
                 }
                 if (_userType.equals("EmergencyUser")) {
                     EmergencyUser _EmergencyUser = new EmergencyUser(
-                            Main._UserCtrl,
+                            Model._UserCtrl,
                             resultSet.getString(2),
                             resultSet.getInt(3),
                             resultSet.getString(1));
 
-                    Main._UserCtrl.addUser(_EmergencyUser);
+                    Model._UserCtrl.addUser(_EmergencyUser);
                     System.out.println("USER ADDED:" + resultSet.getString(1));   // ------------ delete in the end
                 }
 
@@ -99,25 +98,25 @@ public class DBManagement {
             resultSet = statement
                     .executeQuery("SELECT * FROM Events");
             while (resultSet.next()) {
-                User _Representitive = Main._UserCtrl.findUserByName(resultSet.getString(3));
+                User _Representitive = Model._UserCtrl.findUserByName(resultSet.getString(3));
                 if (_Representitive == null) {
                     System.out.println("The _Representitive is null");
                 } else {
                     Event _Event = new Event(resultSet.getString(1),
                             resultSet.getString(4),
-                            Main._UserCtrl,
+                            Model._UserCtrl,
                             _Representitive,
                             resultSet.getString(9));
-                    Main._UserCtrl.addEvent(_Event);
-                    Main._UserCtrl.addEventToUser(resultSet.getString(5), resultSet.getString(1));
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(5), resultSet.getString(1));
+                    Model._UserCtrl.addEvent(_Event);
+                    Model._UserCtrl.addEventToUser(resultSet.getString(5), resultSet.getString(1));
+                    Model._UserCtrl.addUserToEvent(resultSet.getString(5), resultSet.getString(1));
 
-                    Main._UserCtrl.addEventToUser(resultSet.getString(6), resultSet.getString(1));
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(6), resultSet.getString(1));
+                    Model._UserCtrl.addEventToUser(resultSet.getString(6), resultSet.getString(1));
+                    Model._UserCtrl.addUserToEvent(resultSet.getString(6), resultSet.getString(1));
 
 
-                    Main._UserCtrl.addEventToUser(resultSet.getString(7), resultSet.getString(1));
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(7), resultSet.getString(1));
+                    Model._UserCtrl.addEventToUser(resultSet.getString(7), resultSet.getString(1));
+                    Model._UserCtrl.addUserToEvent(resultSet.getString(7), resultSet.getString(1));
 
 
                 }
@@ -147,8 +146,8 @@ public class DBManagement {
             resultSet = statement
                     .executeQuery("SELECT * FROM Commands");
             while (resultSet.next()) {
-                User _User1 = Main._UserCtrl.findUserByName(resultSet.getString(1));
-                User _User2 = Main._UserCtrl.findUserByName(resultSet.getString(2));
+                User _User1 = Model._UserCtrl.findUserByName(resultSet.getString(1));
+                User _User2 = Model._UserCtrl.findUserByName(resultSet.getString(2));
                 if (_User1 == null || _User2 == null) {
                     System.out.println("The user is null");
                 } else {
@@ -156,7 +155,7 @@ public class DBManagement {
                             _User2,
                             resultSet.getString(3));
 
-                    Main._UserCtrl.addCommand(_Command);
+                    Model._UserCtrl.addCommand(_Command);
                 }
 
             }
@@ -189,8 +188,8 @@ public class DBManagement {
                 if (_Description == null) {
                     System.out.println("The category is null");
                 } else {
-                    Category _Category = new Category(_Description, Main._UserCtrl);
-                    Main._UserCtrl.addCategory(_Category);
+                    Category _Category = new Category(_Description, Model._UserCtrl);
+                    Model._UserCtrl.addCategory(_Category);
                 }
 
             }
@@ -219,13 +218,13 @@ public class DBManagement {
             resultSet = statement
                     .executeQuery("SELECT * FROM UserEvents");
             while (resultSet.next()) {
-                Event _Event = Main._UserCtrl.findEventByTitle(resultSet.getString(2));
-                User _User = Main._UserCtrl.findUserByName(resultSet.getString(1));
+                Event _Event = Model._UserCtrl.findEventByTitle(resultSet.getString(2));
+                User _User = Model._UserCtrl.findUserByName(resultSet.getString(1));
                 if (_Event == null || _User == null) {
                     System.out.println("The event or the user is null");
                 } else {
-                    Main._UserCtrl.addEventToUser(resultSet.getString(1), resultSet.getString(2));
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(1), resultSet.getString(2));
+                    Model._UserCtrl.addEventToUser(resultSet.getString(1), resultSet.getString(2));
+                    Model._UserCtrl.addUserToEvent(resultSet.getString(1), resultSet.getString(2));
                 }
 
             }
@@ -254,13 +253,13 @@ public class DBManagement {
             resultSet = statement
                     .executeQuery("SELECT * FROM EventCategory");
             while (resultSet.next()) {
-                Category _Category = Main._UserCtrl.findCategoryByDescription(resultSet.getString(2));
-                Event _Event = Main._UserCtrl.findEventByTitle(resultSet.getString(1));
+                Category _Category = Model._UserCtrl.findCategoryByDescription(resultSet.getString(2));
+                Event _Event = Model._UserCtrl.findEventByTitle(resultSet.getString(1));
                 if (_Event == null || _Category == null) {
                     System.out.println("The event or the Category is null");
                 } else {
-                    Main._UserCtrl.addCategoryToEvent(resultSet.getString(1), resultSet.getString(2));
-                    Main._UserCtrl.addEventToCategory(resultSet.getString(1), resultSet.getString(2));
+                    Model._UserCtrl.addCategoryToEvent(resultSet.getString(1), resultSet.getString(2));
+                    Model._UserCtrl.addEventToCategory(resultSet.getString(1), resultSet.getString(2));
                 }
 
             }
@@ -289,7 +288,7 @@ public class DBManagement {
             resultSet = statement
                     .executeQuery("SELECT * FROM Updates");
             while (resultSet.next()) {
-                Event _Event = Main._UserCtrl.findEventByTitle(resultSet.getString(1));
+                Event _Event = Model._UserCtrl.findEventByTitle(resultSet.getString(1));
                 if (_Event == null) {
                     System.out.println("The event is null");
                 } else {
@@ -297,9 +296,9 @@ public class DBManagement {
                     if (resultSet.getString(4).equals("NULL")) {
                         _PreviousUpdate = null;
                     } else {
-                        _PreviousUpdate = Main._UserCtrl.findEventUpdate(resultSet.getString(1), Integer.parseInt(resultSet.getString(4)));
+                        _PreviousUpdate = Model._UserCtrl.findEventUpdate(resultSet.getString(1), Integer.parseInt(resultSet.getString(4)));
                     }
-                    User _User= Main._UserCtrl.findUserByName(resultSet.getString(5));
+                    User _User= Model._UserCtrl.findUserByName(resultSet.getString(5));
                     EventUpdate _EventUpdate = new EventUpdate(_PreviousUpdate ,
                             _User ,
                             resultSet.getString(3),
@@ -308,8 +307,8 @@ public class DBManagement {
                             Integer.parseInt(resultSet.getString(2)),
                             resultSet.getString(7));
 
-                    Main._UserCtrl.addEventUpdate(_EventUpdate);
-                    Main._UserCtrl.addEventUpdateToEvent(resultSet.getString(1), _EventUpdate);
+                    Model._UserCtrl.addEventUpdate(_EventUpdate);
+                    Model._UserCtrl.addEventUpdateToEvent(resultSet.getString(1), _EventUpdate);
                 }
 
             }
