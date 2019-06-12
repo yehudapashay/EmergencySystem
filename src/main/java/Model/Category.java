@@ -11,9 +11,8 @@ public class Category {
 
     private UserController UserCtrl ;
 
-    //private Representitive _Representitive ;
 
-    public Category(String _Description,UserController userCtrl) {//, Representitive _Representitive) {
+    public Category(String _Description,UserController userCtrl) {
         this._Description = _Description;
         this._Events = new LinkedList();
         UserCtrl = userCtrl;

@@ -52,16 +52,6 @@ public class DBManagement {
                     Main._UserCtrl.addUser(_RepresentiveAdmin);
                     System.out.println("USER ADDED:" + resultSet.getString(1));   // ------------ delete in the end
                 }
-                if (_userType.equals("Representitive")) {
-                    Representitive _Representive = new Representitive(
-                            Main._UserCtrl,
-                            resultSet.getString(2),
-                            resultSet.getInt(3),
-                            resultSet.getString(1));
-
-                    Main._UserCtrl.addUser(_Representive);
-                    System.out.println("USER ADDED:" + resultSet.getString(1));   // ------------ delete in the end
-                }
                 if (_userType.equals("Admin")) {
                     Admin _Admin = new Admin(
                             Main._UserCtrl,
@@ -116,43 +106,18 @@ public class DBManagement {
                     Event _Event = new Event(resultSet.getString(1),
                             resultSet.getString(4),
                             Main._UserCtrl,
-                            _Representitive);
+                            _Representitive,
+                            resultSet.getString(9));
                     Main._UserCtrl.addEvent(_Event);
-                    /// create connection between organization Representitives and the event
-                    User _User = Main._UserCtrl.findUserByName(resultSet.getString(5));
-                    int rank = Main._UserCtrl.findUserByRankName(resultSet.getString(5));
-                    Representitive _PoliceRepresentitive = new Representitive(Main._UserCtrl,
-                            _User.get_Organization().get_OrgaizationName(),
-                            rank,
-                            resultSet.getString(5));
-                    Main._UserCtrl.removeUser(_User);
-                    Main._UserCtrl.addUser(_PoliceRepresentitive);
-                    Main._UserCtrl.addEventToUser(resultSet.getString(5) ,resultSet.getString(1) );
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(5) ,resultSet.getString(1) );
+                    Main._UserCtrl.addEventToUser(resultSet.getString(5), resultSet.getString(1));
+                    Main._UserCtrl.addUserToEvent(resultSet.getString(5), resultSet.getString(1));
 
-                    //////////////////////////////////////////
-                    _User = Main._UserCtrl.findUserByName(resultSet.getString(6));
-                    rank = Main._UserCtrl.findUserByRankName(resultSet.getString(6));
-                    Representitive _FireRepresentitive = new Representitive(Main._UserCtrl,
-                            _User.get_Organization().get_OrgaizationName(),
-                            rank,
-                            resultSet.getString(6));
-                    Main._UserCtrl.removeUser(_User);
-                    Main._UserCtrl.addUser(_FireRepresentitive);
-                    Main._UserCtrl.addEventToUser(resultSet.getString(6) ,resultSet.getString(1) );
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(6) ,resultSet.getString(1) );
+                    Main._UserCtrl.addEventToUser(resultSet.getString(6), resultSet.getString(1));
+                    Main._UserCtrl.addUserToEvent(resultSet.getString(6), resultSet.getString(1));
 
-                    /////////////////////////////////////////
-                    _User = Main._UserCtrl.findUserByName(resultSet.getString(7));
-                    rank = Main._UserCtrl.findUserByRankName(resultSet.getString(7));
-                    Representitive _MDARepresentitive = new Representitive(Main._UserCtrl,
-                            _User.get_Organization().get_OrgaizationName(),
-                            rank,
-                            resultSet.getString(7));
-                    Main._UserCtrl.removeUser(_User);
-                    Main._UserCtrl.addUser(_MDARepresentitive);
-                    Main._UserCtrl.addEventToUser(resultSet.getString(7) ,resultSet.getString(1) );
-                    Main._UserCtrl.addUserToEvent(resultSet.getString(7) ,resultSet.getString(1) );
+
+                    Main._UserCtrl.addEventToUser(resultSet.getString(7), resultSet.getString(1));
+                    Main._UserCtrl.addUserToEvent(resultSet.getString(7), resultSet.getString(1));
 
 
                 }
@@ -311,6 +276,167 @@ public class DBManagement {
             }
         }
 
+    }
+
+
+    public void initEventUpdates() {
+        Connection connection = this.connect();
+        ResultSet resultSet = null;
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement
+                    .executeQuery("SELECT * FROM Updates");
+            while (resultSet.next()) {
+                Event _Event = Main._UserCtrl.findEventByTitle(resultSet.getString(1));
+                if (_Event == null) {
+                    System.out.println("The event is null");
+                } else {
+                    EventUpdate _PreviousUpdate;
+                    if (resultSet.getString(4).equals("NULL")) {
+                        _PreviousUpdate = null;
+                    } else {
+                        _PreviousUpdate = Main._UserCtrl.findEventUpdate(resultSet.getString(1), Integer.parseInt(resultSet.getString(4)));
+                    }
+                    User _User= Main._UserCtrl.findUserByName(resultSet.getString(5));
+                    EventUpdate _EventUpdate = new EventUpdate(_PreviousUpdate ,
+                            _User ,
+                            resultSet.getString(3),
+                            resultSet.getString(6),
+                            _Event,
+                            Integer.parseInt(resultSet.getString(2)),
+                            resultSet.getString(7));
+
+                    Main._UserCtrl.addEventUpdate(_EventUpdate);
+                    Main._UserCtrl.addEventUpdateToEvent(resultSet.getString(1), _EventUpdate);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    /**
+     * This function add a category to the Categories table in the DB
+     *
+     * @param _Category
+     * @return
+     */
+    public boolean addCategoryToDB(Category _Category) {
+        Connection conn = null;
+        String sql = "INSERT INTO Categories(CategoryDescription) VALUES(?)";
+        try {
+            conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, _Category.get_Description());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * This function add a command to the Commands table in the DB
+     *
+     * @param _Command
+     * @return
+     */
+    public boolean addCommandToDB(Command _Command) {
+        Connection conn = null;
+        String sql = "INSERT INTO Commands(UserGetCommand ,UserGivesCommand , Content ) VALUES(?,?,?)";
+        try {
+            conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, _Command.getUserGetCommand().get_name());
+            pstmt.setString(2, _Command.get_UserGivesCommand().get_name());
+            pstmt.setString(3, _Command.getContent());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public boolean addEventUpdateToDB(EventUpdate _EventUpdate) {
+        Connection conn = null;
+        String sql = "INSERT INTO Updates(EventTitle ,UpdateNum , Date ,PreviousUpdateNum ,UserName,Description,InitialDescription   ) VALUES(?,?,?,?,?,?,?)";
+        try {
+            conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, _EventUpdate.get_Event().get_Title());
+            pstmt.setString(2,  Integer.toString(_EventUpdate.get_UpdateNum()));
+            pstmt.setString(3, _EventUpdate.get_Date());
+            pstmt.setString(4, Integer.toString(_EventUpdate.get_PreviousUpdate().get_UpdateNum()));
+            pstmt.setString(5, _EventUpdate.get_User().get_name());
+            pstmt.setString(6, _EventUpdate.get_Content());
+            pstmt.setString(7, _EventUpdate.get_InitialContent());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return updateLastUpdateNum(_EventUpdate);
+    }
+
+    public boolean updateLastUpdateNum(EventUpdate _EventUpdate) {
+        Connection conn = null;
+        String sql = "UPDATE Events SET LastUpdateNum =? WHERE Title =?";
+        try {
+            conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, Integer.toString(_EventUpdate.get_UpdateNum()));
+            pstmt.setString(2, _EventUpdate.get_Event().get_Title());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
     }
 
 

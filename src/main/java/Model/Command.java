@@ -12,6 +12,10 @@ public class Command {
         _Content = content;
     }
 
+    public User get_UserGivesCommand() {
+        return _UserGivesCommand;
+    }
+
     public User getUserGetCommand() {
         return _UserGetCommand;
     }

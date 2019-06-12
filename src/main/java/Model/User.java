@@ -24,6 +24,13 @@ public abstract class User {
         this._Events = new LinkedList();
     }
 
+    public List<Command> get_ReceivedCommands() {
+        return _ReceivedCommands;
+    }
+
+    public List<Command> get_Commands() {
+        return _Commands;
+    }
     /*
     public boolean equals(Object obj) {
         if (!(obj instanceof User)) {
