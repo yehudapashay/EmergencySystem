@@ -126,5 +126,9 @@ public class Main {
         return _UserCtrl.findUserByName(userName);
     }
 
+    public static List<String> getAllUsersForCommand(User current){
+        return _UserCtrl.getAllUsersForCommand(current);
+    }
+
 
 }

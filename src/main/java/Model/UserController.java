@@ -15,6 +15,22 @@ public class UserController {
         this._EventUpdates = new LinkedList();
     }
 
+    private ActionLogger _ActionLogger;
+
+    public ErrorLogger _ErrorLogger;
+
+    private List<EventNotice> _EventsNotice;
+
+    private List<Event> _Events;
+
+    private List<User> _Users;
+
+    private List<Category> _Categories;
+
+    private List<Command> _Commands;
+
+    private List<EventUpdate> _EventUpdates;
+
     public List<Event> get_Events() {
         return _Events;
     }
@@ -120,21 +136,6 @@ public class UserController {
         return null;
     }
 
-    private ActionLogger _ActionLogger;
-
-    public ErrorLogger _ErrorLogger;
-
-    private List<EventNotice> _EventsNotice;
-
-    private List<Event> _Events;
-
-    private List<User> _Users;
-
-    private List<Category> _Categories;
-
-    private List<Command> _Commands;
-
-    private List<EventUpdate> _EventUpdates;
 
     public void addUser(User _User) {
         _Users.add(_User);
@@ -235,7 +236,7 @@ public class UserController {
         }
         RepresentitiveAdmin _RepAdmin = findRepresentitiveAdminByName(_RepresentitiveName);
         if (_RepAdmin == null) {
-            System.out.println("The Representitive Admin  is null");
+            System.out.println("The Representitive Admin is null");
             return null;
         } else {
             Category _Category = new Category(_Description, this);
@@ -315,6 +316,21 @@ public class UserController {
         _Event.addNewEventUpdate(_EventUpdate);
         addEventUpdate(_EventUpdate);
         return _EventUpdate;
+    }
+
+    public  List<String> getAllUsersForCommand(User current){
+        if (! (current instanceof EmergencyUser)){
+            return null;
+        }
+        List<String> users = new LinkedList<>();
+        for (User obj : _Users) {
+            if (obj != current && obj instanceof EmergencyUser) {
+                if (  ((EmergencyUser) obj).get_Rank()  <  ((EmergencyUser) current).get_Rank() ){
+                    users.add(obj.get_name());
+                }
+            }
+        }
+        return users;
     }
 
 
