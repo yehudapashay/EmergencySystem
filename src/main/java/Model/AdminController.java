@@ -5,7 +5,9 @@ import java.util.List;
 
 public class AdminController {
 
-    public AdminController() {
+    private static AdminController obj;
+
+    private AdminController() {
         _Admins = new LinkedList();
 
         _Reports = new LinkedList();
@@ -17,6 +19,13 @@ public class AdminController {
         _ActionLogger = new ActionLogger();
 
         _Feedbacks = new LinkedList();
+    }
+
+    public static AdminController getInstance()
+    {
+        if (obj==null)
+            obj = new AdminController();
+        return obj;
     }
 
     private List<Feedback> _Feedbacks;

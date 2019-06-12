@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UserController {
-    public UserController() {
+    private static UserController obj;
+
+    private UserController() {
         this._ActionLogger = new ActionLogger();
         this._ErrorLogger = new ErrorLogger();
         this._EventsNotice = new LinkedList();
@@ -13,6 +15,14 @@ public class UserController {
         this._Categories = new LinkedList();
         this._Commands = new LinkedList();
         this._EventUpdates = new LinkedList();
+    }
+
+
+    public static UserController getInstance()
+    {
+        if (obj==null)
+            obj = new UserController();
+        return obj;
     }
 
     private ActionLogger _ActionLogger;
