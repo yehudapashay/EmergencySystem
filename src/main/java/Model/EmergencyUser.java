@@ -7,6 +7,10 @@ public class EmergencyUser extends  User {
         this._Rank = _Rank;
     }
 
+    public int get_Rank() {
+        return _Rank;
+    }
+
     public void set_Rank(int _Rank) {
         this._Rank = _Rank;
     }

@@ -11,5 +11,6 @@ public class Representitive extends EmergencyUser {
         _Events = new LinkedList();
     }
 
+
     private List<Event > _Events;
 }

@@ -19,4 +19,12 @@ public class Category {
         UserCtrl = userCtrl;
         //this._Representitive = _Representitive;
     }
+
+    public String get_Description() {
+        return _Description;
+    }
+
+    public void addEvent(Event _Event){
+        _Events.add(_Event);
+    }
 }

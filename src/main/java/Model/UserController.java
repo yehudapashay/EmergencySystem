@@ -23,10 +23,50 @@ public class UserController {
         return null;
     }
 
+    public int findUserByRankName(String name) {
+        for (User obj : _Users) {
+            if (obj.get_name().equals(name) ) {
+                if (obj instanceof EmergencyUser){
+                    return ((EmergencyUser) obj).get_Rank();
+                }
+                else if(obj instanceof Representitive){
+                    return ((Representitive) obj).get_Rank();
+                }
+                else{
+                   return -1;
+                }
+
+            }
+        }
+        return -1;
+    }
+
+    /*
+
     public Representitive findRepresentitiveByName(String name) {
         for (User obj : _Users) {
             if ((obj instanceof Representitive) && (obj.get_name().equals(name))) {
                 return (Representitive) obj;
+            }
+        }
+        return null;
+    }
+
+    */
+
+    public Event findEventByTitle(String name) {
+        for (Event obj : _Events) {
+            if (obj.get_Title().equals(name)){
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    public Category findCategoryByDescription(String _Description) {
+        for (Category obj : _Categories) {
+            if (obj.get_Description().equals(_Description)){
+                return obj;
             }
         }
         return null;
@@ -52,6 +92,31 @@ public class UserController {
 
     public void addEvent(Event _Event) {
         _Events.add(_Event);
+        findUserByName(_Event.get_Representitive().get_name()).addEvent(_Event);
+    }
+
+    //////////////////////////////////////////////////////////
+    public void addEventToUser(String _UserName , String _Title) {
+        findEventByTitle(_Title).addUser(findUserByName(_UserName));
+    }
+
+    public void addUserToEvent(String _UserName , String _Title) {
+        findUserByName(_UserName).addEvent(findEventByTitle(_Title));
+    }
+    ////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////
+    public void addEventToCategory(String _EventTitle , String _Description) {
+        findCategoryByDescription(_Description).addEvent(findEventByTitle(_EventTitle));
+    }
+
+    public void addCategoryToEvent(String _EventTitle , String _Description) {
+        findEventByTitle(_EventTitle).addCategory(findCategoryByDescription(_Description));
+    }
+    ////////////////////////////////////////////////////////////////
+
+    public void removeUser(User _User) {
+        _Users.remove(_User);
     }
 
     public void addCommand(Command _Command) {

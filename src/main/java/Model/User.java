@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class User {
+
+
     public User(UserController _UserCtrl, String _Organization , String name) {
         this._ReceivedCommands = new LinkedList();
         this._Commands  = new LinkedList();
@@ -18,6 +20,8 @@ public abstract class User {
         this._Reports  = new LinkedList();
         this._Feedbacks = new LinkedList();
         this._name =name;
+
+        this._Events = new LinkedList();
     }
 
     /*
@@ -34,11 +38,21 @@ public abstract class User {
     }
 
     public void addReceivedCommand(Command _Command){
-        _ReceivedCommands.add(_Command);
+        if (!_ReceivedCommands.contains(_Command)){
+            _ReceivedCommands.add(_Command);
+        }
     }
 
     public void addCommand(Command _Command){
-        _Commands.add(_Command);
+        if (!_Commands.contains(_Command)){
+            _Commands.add(_Command);
+        }
+    }
+
+    public void addEvent(Event _Event){
+        if (!_Events.contains(_Event)){
+            _Events.add(_Event);
+        }
     }
 
     protected String _name;
@@ -64,6 +78,12 @@ public abstract class User {
     protected List <Report> _Reports ;
 
     protected List <Feedback> _Feedbacks ;
+
+    protected List <Event> _Events ;
+
+    public Organization get_Organization() {
+        return _Organization;
+    }
 
     public abstract void addFeedback();
 

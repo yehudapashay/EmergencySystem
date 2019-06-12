@@ -8,14 +8,17 @@ import java.util.Locale;
 public class Event {
 
     public Event(String _Title, String _Status,
-                 UserController _UserCtrl, Representitive _Representitive) {
+                 UserController _UserCtrl, User _Representitive) {
         this._Title = _Title;
         this._PublishTime = new Date();
         this._Status = _Status;
         this._UserCtrl = _UserCtrl;
         this._Representitive = _Representitive;
         this._Categories = new LinkedList();
+        this._Users = new LinkedList();
     }
+
+    private List<User> _Users;
 
     private String _Title;
 
@@ -25,7 +28,7 @@ public class Event {
 
     private UserController _UserCtrl ;
 
-    private Representitive _Representitive ;
+    private User _Representitive ;
 
     private List<Category> _Categories ;
 
@@ -38,6 +41,29 @@ public class Event {
     public void createFedbacks(){};
 
     public EventUpdate addEventUpdate(){ return null;}
+
+    public void addUser(User _User){
+        if (!_Users.contains(_User)){
+            _Users.add(_User);
+        }
+    }
+
+    public void addCategory(Category _Category){
+        if (!_Categories.contains(_Category)){
+            _Categories.add(_Category);
+        }
+    }
+
+    public User get_Representitive() {
+        return _Representitive;
+    }
+
+    public String get_Title() {
+        return _Title;
+    }
+
+
+
 
 
 }

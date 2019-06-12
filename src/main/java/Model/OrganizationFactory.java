@@ -14,7 +14,10 @@ public class OrganizationFactory {
             return new FireFighters();
         } else if (OrganizationType.equalsIgnoreCase("MDA")) {
             return new MDA();
+        }else if (OrganizationType.equalsIgnoreCase("Emergency Center")) {
+            return new EmergencyCenter();
         }
+
         return null;
     }
 }

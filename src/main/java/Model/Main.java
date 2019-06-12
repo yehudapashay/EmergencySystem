@@ -17,6 +17,8 @@ public class Main {
         DB.initEvent();
         DB.initCommands();
         DB.initCategories();
+        DB.initEventCategory();
+        DB.initEventForUsers();
 
 
     }
