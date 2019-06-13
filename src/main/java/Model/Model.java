@@ -11,8 +11,6 @@ public class Model {
     public static DBManagement DB = new DBManagement();
 
     public Model() {
-        //Date d =new Date();
-        //System.out.println(d.toString());
         DB.initUsers();
         DB.initEvent();
         DB.initCommands();
@@ -20,6 +18,7 @@ public class Model {
         DB.initEventCategory();
         DB.initEventForUsers();
         DB.initEventUpdates();
+        DB.initCommands();
     }
 
 
@@ -69,6 +68,10 @@ public class Model {
     //////////////////////////////////////   Functions for ron
     public static List<Event> getAllEvents() {
         return _UserCtrl.get_Events();
+    }
+
+    public static List<Event> getAllUserEvents() {
+        return _UserCtrl.get_AllUserEvents();
     }
 
     public static List<EventUpdate> getAllUpdates() {

@@ -18,9 +18,8 @@ public class UserController {
     }
 
 
-    public static UserController getInstance()
-    {
-        if (obj==null)
+    public static UserController getInstance() {
+        if (obj == null)
             obj = new UserController();
         return obj;
     }
@@ -42,6 +41,9 @@ public class UserController {
     private List<EventUpdate> _EventUpdates;
 
     public List<Event> get_Events() {
+        return _Events;
+    }
+    public List<Event> get_AllUserEvents() {
         return _Events;
     }
 
@@ -328,14 +330,16 @@ public class UserController {
         return _EventUpdate;
     }
 
-    public  List<String> getAllUsersForCommand(User current){
-        if (! (current instanceof EmergencyUser)){
+    public List<String> getAllUsersForCommand(User current) {
+        if (!(current instanceof EmergencyUser)) {
             return null;
         }
         List<String> users = new LinkedList<>();
         for (User obj : _Users) {
             if (obj != current && obj instanceof EmergencyUser) {
-                if (  ((EmergencyUser) obj).get_Rank()  <  ((EmergencyUser) current).get_Rank() ){
+                if (((EmergencyUser) obj).get_Rank() < ((EmergencyUser) current).get_Rank() &&
+                        ((EmergencyUser) obj).get_Organization().get_OrgaizationName().equals(
+                                ((EmergencyUser) current).get_Organization().get_OrgaizationName())) {
                     users.add(obj.get_name());
                 }
             }

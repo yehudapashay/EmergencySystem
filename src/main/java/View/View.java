@@ -2,7 +2,6 @@ package View;
 
 import Model.Model;
 import Model.User;
-import Model.Admin;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +33,9 @@ public class View {
     public Button commandsButton;
     public Button updatesButton;
     public Button logoutButton;
+    public CommandsController commandsController;
+    public CategoriesController categoriesController;
+    public UpdatesController updatesController;
 
     /**
      * Setting the view's controller. implement mvc paradigm
@@ -51,18 +53,15 @@ public class View {
         User user = Model.login(userName.getText());
         if (user != null) {
             currentUser = user;
-            logoutButton.setDisable(true);
-            if (user instanceof Admin){
-                categoriesButton.setDisable(false);
-                updatesButton.setDisable(false);
-            }
-            else {
-                commandsButton.setDisable(false);
-                updatesButton.setDisable(false);
-            }
+            logoutButton.setDisable(false);
+            categoriesButton.setDisable(false);
+            updatesButton.setDisable(false);
+            commandsButton.setDisable(false);
+
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Invalid User Name");
+            alert.show();
         }
     }
 
@@ -73,12 +72,14 @@ public class View {
 //        Stage stage = (Stage) BackButton.getScene().getWindow();
 //        stage.close();
 //    }
-    private void openWindow(String fxmlPath, String title) {
+    private FXMLLoader openWindow(String fxmlPath, String title) {
         Stage stage = new Stage();
         stage.setResizable(true);
         stage.setTitle(title);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+
         try {
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(fxmlPath));
+            Parent root = fxmlLoader.load(getClass().getClassLoader().getResource(fxmlPath).openStream());
 //            root.getStylesheets().add(getClass().getClassLoader().getResource("flightCSS.css").toExternalForm());
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -87,22 +88,29 @@ public class View {
         } catch (Exception e) {
             e.getCause().printStackTrace();
         }
+        return fxmlLoader;
     }
 
     public void openCategories() {
-        this.openWindow("EmergencyCategories.fxml", "Categories Management");
+        FXMLLoader fxmlLoader = this.openWindow("EmergencyCategories.fxml", "Categories Management");
+        categoriesController = (CategoriesController) fxmlLoader.getController();
+        categoriesController.init();
     }
 
     public void openCommands() {
-        this.openWindow("EmergencyCommands.fxml", "Commands Management");
+        FXMLLoader fxmlLoader = this.openWindow("EmergencyCommands.fxml", "Commands Management");
+        commandsController = (CommandsController) fxmlLoader.getController();
+        commandsController.init();
     }
 
     public void openUpdates() {
-        this.openWindow("EmergencyUpdates.fxml", "Updates Management");
+        FXMLLoader fxmlLoader = this.openWindow("EmergencyUpdates.fxml", "Updates Management");
+        updatesController = (UpdatesController) fxmlLoader.getController();
+        updatesController.init();
     }
 
-    public void logout(){
-        currentUser=null;
+    public void logout() {
+        currentUser = null;
         categoriesButton.setDisable(true);
         commandsButton.setDisable(true);
         updatesButton.setDisable(true);

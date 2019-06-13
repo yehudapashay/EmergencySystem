@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.*;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -102,23 +103,32 @@ public class DBManagement {
                 if (_Representitive == null) {
                     System.out.println("The _Representitive is null");
                 } else {
+                    if ( Model._UserCtrl.findUserByName(resultSet.getString(3)) ==null ||
+                            (  ( Model._UserCtrl.findUserByName(resultSet.getString(5)) ==null &&
+                                    Model._UserCtrl.findUserByName(resultSet.getString(6)) ==null &&
+                                    Model._UserCtrl.findUserByName(resultSet.getString(7)) ==null) )){
+                        continue;
+                    }
                     Event _Event = new Event(resultSet.getString(1),
                             resultSet.getString(4),
                             Model._UserCtrl,
                             _Representitive,
                             resultSet.getString(9));
                     Model._UserCtrl.addEvent(_Event);
-                    Model._UserCtrl.addEventToUser(resultSet.getString(5), resultSet.getString(1));
-                    Model._UserCtrl.addUserToEvent(resultSet.getString(5), resultSet.getString(1));
+                    if (Model._UserCtrl.findUserByName(resultSet.getString(5)) != null ){
+                        Model._UserCtrl.addEventToUser(resultSet.getString(5), resultSet.getString(1));
+                        Model._UserCtrl.addUserToEvent(resultSet.getString(5), resultSet.getString(1));
+                    }
 
-                    Model._UserCtrl.addEventToUser(resultSet.getString(6), resultSet.getString(1));
-                    Model._UserCtrl.addUserToEvent(resultSet.getString(6), resultSet.getString(1));
+                    if (Model._UserCtrl.findUserByName(resultSet.getString(6)) != null ){
+                        Model._UserCtrl.addEventToUser(resultSet.getString(6), resultSet.getString(1));
+                        Model._UserCtrl.addUserToEvent(resultSet.getString(6), resultSet.getString(1));
+                    }
 
-
-                    Model._UserCtrl.addEventToUser(resultSet.getString(7), resultSet.getString(1));
-                    Model._UserCtrl.addUserToEvent(resultSet.getString(7), resultSet.getString(1));
-
-
+                    if (Model._UserCtrl.findUserByName(resultSet.getString(7)) != null ){
+                        Model._UserCtrl.addEventToUser(resultSet.getString(7), resultSet.getString(1));
+                        Model._UserCtrl.addUserToEvent(resultSet.getString(7), resultSet.getString(1));
+                    }
                 }
 
             }

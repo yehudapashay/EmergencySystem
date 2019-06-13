@@ -5,27 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EventUpdate {
-    public EventUpdate(EventUpdate _PreviousUpdate, User _User, String _Date, String _Content ,Event _Event , int _UpdateNum, String _InitialContent) {
-        this._PreviousUpdate = _PreviousUpdate;
-        this._User = _User;
-        this._UpdatesVersions = new LinkedList();
-        this._Date = _Date;
-        this._Content = _Content;
-        this._Event =_Event;
-        this._UpdateNum = _UpdateNum;
-        this._InitialContent =_InitialContent;
-    }
-
-
-    private EventUpdate _PreviousUpdate;
-
-    //private EventUpdate _NextUpdate;
 
     private User _User;
 
-    private List<Version > _UpdatesVersions ;
+    private List<Version> _UpdatesVersions;
 
-    private String _Date ;
+    private String _Date;
 
     private String _Content;
 
@@ -34,6 +19,24 @@ public class EventUpdate {
     private Event _Event;
 
     private int _UpdateNum;
+
+    private EventUpdate _PreviousUpdate;
+
+
+    public EventUpdate(EventUpdate _PreviousUpdate, User _User, String _Date, String _Content, Event _Event, int _UpdateNum, String _InitialContent) {
+        this._PreviousUpdate = _PreviousUpdate;
+        this._User = _User;
+        this._UpdatesVersions = new LinkedList();
+        this._Date = _Date;
+        this._Content = _Content;
+        this._Event = _Event;
+        this._UpdateNum = _UpdateNum;
+        this._InitialContent = _InitialContent;
+    }
+
+
+    //private EventUpdate _NextUpdate;
+
 
     public Event get_Event() {
         return _Event;
