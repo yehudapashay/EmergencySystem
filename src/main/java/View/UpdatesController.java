@@ -78,7 +78,8 @@ public class UpdatesController extends ViewController {
         List<Event> events = Model.getAllEvents();
         for (Event event :
                 events) {
-            EventComboBox.getItems().add(event.get_Title());
+            if(event.checkUserExists(View.currentUser))
+                EventComboBox.getItems().add(event.get_Title());
         }
         initTable();
 
