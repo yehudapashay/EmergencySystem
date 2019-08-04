@@ -226,12 +226,7 @@ public class UserController {
         _Categories.add(_Category);
     }
 
-    /**
-     * This function check if the category exists in the categories list
-     *
-     * @param _CategoryDescription
-     * @return
-     */
+
     public boolean checkCategoryExist(String _CategoryDescription) {
         for (Category obj : _Categories) {
             if ((obj.get_Description().equals(_CategoryDescription))) {
@@ -246,8 +241,8 @@ public class UserController {
             System.out.println("The category already exists in the system");
             return null;
         }
-        RepresentitiveAdmin _RepAdmin = findRepresentitiveAdminByName(_RepresentitiveName);
-        if (_RepAdmin == null) {
+        RepresentitiveAdmin RA = findRepresentitiveAdminByName(_RepresentitiveName);
+        if (RA == null) {
             System.out.println("The Representitive Admin is null");
             return null;
         } else {
@@ -258,13 +253,7 @@ public class UserController {
         }
     }
 
-    /**
-     * This function checks if users are from the same organization
-     *
-     * @param _U1
-     * @param _U2
-     * @return
-     */
+
     public boolean checkUsersFromSameOrganization(User _U1, User _U2) {
         if (_U1.get_Organization().get_OrgaizationName().equals(
                 _U2.get_Organization().get_OrgaizationName())) {
@@ -273,14 +262,7 @@ public class UserController {
         return false;
     }
 
-    /**
-     * This function adds new command to user in the system
-     *
-     * @param _userGivesCommand
-     * @param _userGetCommand
-     * @param _content
-     * @return
-     */
+
     public Command addCommand(String _userGivesCommand, String _userGetCommand, String _content) {
         EmergencyUser _UserGivesCommand = findEmergencyUserByName(_userGivesCommand);
         EmergencyUser _UserGetCommand = findEmergencyUserByName(_userGetCommand);
@@ -299,9 +281,10 @@ public class UserController {
             return null;
         }
         Command _Command = new Command(_UserGetCommand, _UserGivesCommand, _content);
-        _Commands.add(_Command);
-        _UserGivesCommand.addCommand(_Command);
         _UserGetCommand.addReceivedCommand(_Command);
+        _UserGivesCommand.addCommand(_Command);
+        _Commands.add(_Command);
+
         return _Command;
 
 
@@ -326,6 +309,7 @@ public class UserController {
         EventUpdate _EventUpdate = new EventUpdate(_Event.getLastUpdate(), _User, Date, _content, _Event,
                 _Event.getAndIcreseCounter(), _Event.get_InitialDescription());
         _Event.addNewEventUpdate(_EventUpdate);
+        _User.addEventUpdate(_EventUpdate);
         addEventUpdate(_EventUpdate);
         return _EventUpdate;
     }

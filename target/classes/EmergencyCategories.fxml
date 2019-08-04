@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0"
+            prefWidth="485.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.CategoriesController">
+    <children>
+        <TextField id="categoryNameInput" fx:id="categoryName" layoutX="120.0" layoutY="66.0"/>
+        <Text layoutX="98.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Welcome To Categories Management"/>
+        <Text layoutX="20.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category Name:"
+              wrappingWidth="89.13671875"/>
+        <Button id="createCategoryButton" fx:id="createCategoryButton" layoutX="290.0" layoutY="66.0"
+                mnemonicParsing="false" onAction="#createCategory" text="Create Category"/>
+        <TableView id="categoriesTable" fx:id="categoriesTable" layoutX="124.0" layoutY="120.0" prefHeight="204.0"
+                   prefWidth="129.0">
+            <columns>
+                <TableColumn id="categoriesColumn" fx:id="categoriesColumn" prefWidth="128.0" text="Categories"/>
+            </columns>
+        </TableView>
+        <Button fx:id="BackButton" layoutX="361.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="102.0" onAction="#backHome" text="Back"/>
+    </children>
+</AnchorPane>

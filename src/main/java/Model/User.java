@@ -62,6 +62,12 @@ public abstract class User {
         }
     }
 
+    public void addEventUpdate(EventUpdate _currentEventUpdate){
+        if (!_EventUpdate.contains(_currentEventUpdate)){
+            _EventUpdate.add(_currentEventUpdate);
+        }
+    }
+
     protected String _name;
 
     protected List <Command> _ReceivedCommands ; //= new LinkedList();

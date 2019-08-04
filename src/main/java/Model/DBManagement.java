@@ -11,6 +11,10 @@ public class DBManagement {
     public DBManagement() {
     }
 
+    /**
+     * This function responsibl to connect to DB
+     * @return
+     */
     private Connection connect() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -19,7 +23,7 @@ public class DBManagement {
         }
 
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\EmergencyDB.db";
-        System.out.println("our url is : " + url);
+        //System.out.println("our url is : " + url);
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -30,6 +34,9 @@ public class DBManagement {
     }
 
 
+    /**
+     * This function init the users from the DB
+     */
     public void initUsers() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -89,6 +96,9 @@ public class DBManagement {
 
     }
 
+    /**
+     * This function init the events from the DB
+     */
     public void initEvent() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -146,6 +156,9 @@ public class DBManagement {
 
     }
 
+    /**
+     * This function init the commands from the DB
+     */
     public void initCommands() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -184,6 +197,9 @@ public class DBManagement {
     }
 
 
+    /**
+     * This function init the categories from the DB
+     */
     public void initCategories() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -218,6 +234,9 @@ public class DBManagement {
     }
 
 
+    /**
+     * This function init the user's events from the DB
+     */
     public void initEventForUsers() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -252,7 +271,9 @@ public class DBManagement {
 
     }
 
-
+    /**
+     * This function init the event's categories from the DB
+     */
     public void initEventCategory() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -287,7 +308,9 @@ public class DBManagement {
 
     }
 
-
+    /**
+     * This function init the event's updates from the DB
+     */
     public void initEventUpdates() {
         Connection connection = this.connect();
         ResultSet resultSet = null;
@@ -317,6 +340,7 @@ public class DBManagement {
                             Integer.parseInt(resultSet.getString(2)),
                             resultSet.getString(7));
 
+                    _User.addEventUpdate(_EventUpdate);
                     Model._UserCtrl.addEventUpdate(_EventUpdate);
                     Model._UserCtrl.addEventUpdateToEvent(resultSet.getString(1), _EventUpdate);
                 }
@@ -396,7 +420,12 @@ public class DBManagement {
         return true;
     }
 
-
+    /**
+     * This function add a Event Update to the EventUpdate table in the DB
+     *
+     * @param _EventUpdate
+     * @return
+     */
     public boolean addEventUpdateToDB(EventUpdate _EventUpdate) {
         Connection conn = null;
         String sql = "INSERT INTO Updates(EventTitle ,UpdateNum , Date ,PreviousUpdateNum ,UserName,Description,InitialDescription   ) VALUES(?,?,?,?,?,?,?)";
@@ -425,6 +454,11 @@ public class DBManagement {
         return updateLastUpdateNum(_EventUpdate);
     }
 
+    /**
+     * This function update the last update num
+     * @param _EventUpdate
+     * @return
+     */
     public boolean updateLastUpdateNum(EventUpdate _EventUpdate) {
         Connection conn = null;
         String sql = "UPDATE Events SET LastUpdateNum =? WHERE Title =?";

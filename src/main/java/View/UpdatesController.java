@@ -81,7 +81,7 @@ public class UpdatesController extends ViewController {
             if(event.checkUserExists(View.currentUser))
                 EventComboBox.getItems().add(event.get_Title());
         }
-        initTable();
+        //initTable();
 
     }
 

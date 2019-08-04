@@ -18,12 +18,15 @@ public class Model {
         DB.initEventCategory();
         DB.initEventForUsers();
         DB.initEventUpdates();
-        DB.initCommands();
     }
 
 
     /////////////////////////////// UC-1
     public static boolean createNewCategory(String _RepresentitiveName, String _Description) {
+        if (_RepresentitiveName == null || _RepresentitiveName.isEmpty()||
+                _Description == null || _Description.isEmpty()){
+            return false;
+        }
         if (_UserCtrl.checkCategoryExist(_Description)) {
             System.out.println("The category already exists in the system");
             return false;
@@ -41,6 +44,11 @@ public class Model {
     /////////////////////////////// UC-2
     public static boolean addCommand(String _userGivesCommand, String _userGetCommand,
                                      String _content) {
+        if (_userGivesCommand == null || _userGivesCommand.isEmpty()||
+                _userGetCommand == null || _userGetCommand.isEmpty() ||
+                _content == null || _content.isEmpty() ){
+            return false;
+        }
         Command _Command = _UserCtrl.addCommand(_userGivesCommand, _userGetCommand, _content);
         if (_Command != null) {
             return (DB.addCommandToDB(_Command));
@@ -53,7 +61,12 @@ public class Model {
 
     /////////////////////////////// UC-3
     public static boolean publishUpdate(String _userName, String _eventTitle, String Date, String _content) {
-
+        if (_userName == null || _userName.isEmpty()||
+                _eventTitle == null || _eventTitle.isEmpty() ||
+                Date == null || Date.isEmpty() ||
+                _content == null || _content.isEmpty() ){
+            return false;
+        }
         EventUpdate _EventUpdate = _UserCtrl.createNewUpdate(_userName, _eventTitle, Date, _content);
         if (_EventUpdate != null) {
             return (DB.addEventUpdateToDB(_EventUpdate));
@@ -65,7 +78,6 @@ public class Model {
     }
 
 
-    //////////////////////////////////////   Functions for ron
     public static List<Event> getAllEvents() {
         return _UserCtrl.get_Events();
     }

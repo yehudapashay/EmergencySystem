@@ -1,4 +1,9 @@
-# EmergencySystemProject
+# Emergency System
+
+implementation of the use cases: 
+	o create command 
+	o create category
+	o publish Update
 
 *** Important ***
 
